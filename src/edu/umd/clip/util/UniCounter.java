@@ -280,7 +280,7 @@ public final class UniCounter<K1> implements Serializable, Cloneable {
         counter.setCount("suns", 1);
         System.out.println(counter);
         counter.setCount("aliens", 0);
-        System.out.println(counter);
+        //  System.out.println(counter);
         System.out.println(counter.toString());
         System.out.println("Total: " + counter.getCount());
     }

@@ -58,6 +58,7 @@ public class GrammarTrainer {
         public int horizontalMarkovization = 0;
         @Option(name = "-ver", usage = "Vertical Markovization (Default: 1)")
         public int verticalMarkovization = 1;
+        // Debug Djame
         @Option(name = "-rare", usage = "Rare word threshold (Default: 12)")
         public double rareThreshold = 12;
         @Option(name = "-lessMem", usage = "Use the (slower) memory efficient mode (Default: false)")
@@ -86,15 +87,19 @@ public class GrammarTrainer {
         @Option(name = "-oovPred", required = false, usage = "Word predicates for the OOV model (Default: null)")
         public String oovPredicate = null;
         @Option(name = "-oov", required = false, usage = "The rare word threshold for the FeaturedOOVLexicon (Default: 12)")
+        // Debug Djame:  this threshold is probably way too high. Check if it's used somewhere.
         public double oovThreshold = 12;
         @Option(name = "-oovLexReg", usage = "Regularization weight of lexical rule features for the FeaturedOOVLexicon (Default: 1)")
         public double oovLexWeight = 1;
         @Option(name = "-logLevel", required = false, usage = "Logging level: FINEST, FINER, FINE, CONFIG, INFO, WARNING, SEVERE (Default: INFO)")
         public String logLevel = "INFO";
 
+
         boolean useFeatureLexicon = false;
     }
 
+    // Debug
+    // djamé : the training code
     public static void main(String[] args) throws Exception {
         OptionParser optParser = new OptionParser(Options.class);
         Options opts = (Options) optParser.parse(args, true);
@@ -102,7 +107,8 @@ public class GrammarTrainer {
         GlobalLogger.setLevel(Level.parse(opts.logLevel));
         
         GlobalLogger.log(Level.INFO, String.format("Calling with " + optParser.getPassedInOptions()));
-
+        // Debug : djame
+        System.err.println(String.format("Calling with " + optParser.getPassedInOptions()));
         RandomDisturbance.setRandSeed(opts.seed);
         int numSplits = opts.numSplits;
         String trainList = opts.trainList;

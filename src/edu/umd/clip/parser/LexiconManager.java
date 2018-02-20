@@ -119,13 +119,15 @@ public class LexiconManager implements Serializable, Cloneable {
         }
 
         totalUnseenTokens = 0;
+        double all=0;
         for (Entry<String, Double> uniEntry : wordCountsMap.entrySet()) {
             double count = uniEntry.getValue();
+            all +=count;
             if (count < rareWordThreshold) {
                 totalUnseenTokens += count;
             }
         }
-
+        System.err.println("**** DEBUG: total Unseen TOkens= "+totalUnseenTokens + " / "+ all);
         unseenTagCounts = new double[numNodes];
         for (int ni = 0; ni < numNodes; ni++) {
             if (tagWordCounts[ni] == null) {

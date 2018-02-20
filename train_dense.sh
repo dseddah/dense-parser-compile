@@ -14,7 +14,7 @@ else
 fi
 
 
-java -Xmx7000m -ss10m -cp lib:src:classes edu.umd.clip.parser.GrammarTrainer -train $BASEDIR/train_files.txt -out $OUTGRMPREF -jobs 8 -numSplits $SPLIT -lang english -seed 0
+java -Xmx7000m -ss10m -cp lib:src:classes edu.umd.clip.parser.GrammarTrainer -train $BASEDIR/train_files.txt -out $OUTGRMPREF -jobs 8 -numSplits $SPLIT -lang english -seed 0 -rare 5
 cp  "$OUTGRMPREF-$SPLIT.gr" "$OUTGRMPREF-final.gr"
 
 echo "****** Final Grammar is here" 
