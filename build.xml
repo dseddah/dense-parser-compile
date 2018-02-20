@@ -1,0 +1,138 @@
+  <!-- ************************************************************** -->
+<!-- EASY OPEN PROJECT                                                -->
+<!--                                                                  -->
+<!-- Build java :                                                     -->
+<!--                                                                  -->
+<!-- [1] --> 
+<!--                                                                  -->
+<!--  Created by Djame Seddah to compile Bikel Parser                 -->
+<!-- **************************************************************** -->
+ 
+<project name="denseparser" default="dist-all" basedir=".">
+
+  <property environment="env"/>
+
+  <!-- set global properties for this build -->
+  <property name="src"                    value="."/>
+  <property name="java.build"             value="${basedir}/classes"/>
+  <property name="java.dist"              value="${basedir}/dist"/>
+  <property name="java.doc.api"           value="${basedir}/doc"/>
+  <property name="project.class.path"     value="${classpath}"/>
+  <property name="file.encoding"	  value="UTF-8"/>
+
+
+  <!-- ================== BUILD : Create directories ====================== --> 
+  <target name="build-prepare" description="Create the %build directory"> 
+    <mkdir dir="${java.build}"/> 
+  </target>
+
+  <!-- ================= BUILD : compile Metadata component  ================== -->  
+  <target 
+      name="build-main" 
+      depends="build-prepare" 
+      description="Compile java sources into classes in %build directory">
+
+    <javac encoding="UTF-8" srcdir="${src}" destdir="${java.build}"  debug="on">
+
+      <classpath>
+        <pathelement path="${classpath}"/>
+        <fileset dir="lib">
+          <include name="**/*.jar"/>
+          <include name="**/*.properties"/>
+        </fileset>
+      </classpath>
+
+    </javac>
+
+    <copy todir="${java.build}">
+      <fileset dir="${src}/src/">
+        <include name="**/data/*"/>
+      </fileset>
+	</copy>
+<!-- # commented by djame for the dense parser stuff
+	<copy file="src/danbikel/parser/default-settings.properties" tofile="classes/danbikel/parser/default-settings.properties" />
+	-->
+  </target>
+
+  <!-- ================ BUILD : rebuild everything ======================== --> 
+  <target 
+     name="build-all" 
+     depends="build-main" 
+     description="Remove %build directory and compile java and rmi classes" /> 
+
+  <!-- ================== BUILD : clean directory ========================= --> 
+  <target name="build-clean" description="Delete build directory"> 
+    <delete dir="${java.build}" />
+  </target>
+
+  <!-- =================== DIST : create directories ====================== --> 
+  <target name="dist-prepare" description="Create %dist directory"> 
+    <mkdir dir="${java.dist}"/> 
+  </target>
+
+  <!-- ========== DIST : create distribution jar file ============== -->
+  <target 
+      name="dist-metadata" 
+      depends="build-all, dist-prepare"
+      description="Create JAR distribution file for Metadata in %dist directory">
+	<!-- jar jarfile="${java.dist}/dbparser-fr.jar"-->
+
+    <jar jarfile="denseparser.jar">
+      <fileset dir="${java.build}" includes="**/*.class" />
+      <fileset dir="${java.build}" includes="**/*.properties" />
+      <fileset dir="${java.build}" includes="**/*.lisp" />
+    </jar>
+      
+  </target>
+
+  <!-- ============== DIST : create all distribution files ================ --> 
+  <target 
+      name="dist-all" 
+      depends="dist-metadata" 
+      description="Create JAR distribution files for Cocoon and RMI server"/>
+
+  <target 
+      name="compile" 
+      depends="dist-metadata"
+      description="==> dist-all"/> 
+
+  <!-- ================== DIST : clean diretory =========================== --> 
+   <target name="dist-clean" description="Remove %dist directory">
+    <delete dir="${java.dist}"/>
+  </target>
+
+  <!-- =============== CLEAN : clean all directories ====================== -->
+  <target 
+      name="clean-all" 
+      depends="build-clean, dist-clean"
+      description="Remove %build and %dist directories"/>
+
+  <target
+      name="clean"
+      depends="build-clean, dist-clean"
+      description="==> clean-all"/>
+
+  
+  <!-- =========== JAVA DOC : create the API documentation  =============== -->
+
+  <target
+      name="javadoc"
+      description="Build the Java API and copy it to the specified directory">
+
+    <javadoc packagenames="danbikel.*"
+             sourcepath="src"
+             defaultexcludes="yes"
+             destdir="${java.doc.api}"
+             author="true"
+             version="true"
+             use="true"
+             windowtitle="GFI ISO-19115  API">
+      <doctitle><![CDATA[<h1>XML Metadata</h1>]]></doctitle>
+      <bottom><![CDATA[<i>Copyright &#169; 2002 Dan Bikel. All Rights Reserved.</i>]]></bottom>
+      <link href="http://developer.java.sun.com/developer/products/xml/docs/api/"/>
+    </javadoc>
+
+  </target>
+
+
+</project>
