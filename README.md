@@ -8,5 +8,4 @@ Small modif (from now). Adding a lame env variable to quickly parameterize the w
 
 
 
-Djame Seddah
-
+Djamé
